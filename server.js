@@ -58,7 +58,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["http://localhost:5173", "http://192.168.1.100:3000"];
+const allowedOrigins = ["http://localhost:5173", "http://192.168.1.100:3000", "https://e-alerto-client.vercel.app"];
 app.use(
   cors({
     origin: allowedOrigins,
