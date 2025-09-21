@@ -22,7 +22,7 @@ const port = process.env.PORT || 4000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://e-alerto-client.vercel.app", // Replace with your frontend URL
+    origin: "https://e-alerto-qcde.vercel.app", // Replace with your frontend URL
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -58,7 +58,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["https://e-alerto-client.vercel.app"];
+const allowedOrigins = ["https://e-alerto-qcde.vercel.app"];
 app.use(
   cors({
     origin: allowedOrigins,
