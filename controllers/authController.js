@@ -163,7 +163,6 @@ export const register = async (req, res) => {
       httpOnly: true,
       secure: true, // must be HTTPS
       sameSite: "none", // allow cross-site cookies
-      domain: ".ealert-qcde.com", // only if frontend + backend share this root
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -242,7 +241,6 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: true, // Safari requires HTTPS
       sameSite: "none", // allow cross-site cookie
-      domain: ".ealerto-qcde.com", // 🔑 share cookie across subdomains
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -259,7 +257,6 @@ export const logout = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      domain: ".ealerto-qcde.com",
     });
     return res.json({ success: true, message: "Logged Out" });
   } catch (error) {
