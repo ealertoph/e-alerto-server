@@ -9,7 +9,10 @@ import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
 import { Readable } from "stream";
 import fetch from "node-fetch"; // add this at the top if not yet imported
-import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from "../config/emailTemplates.js";
+import {
+  EMAIL_VERIFY_TEMPLATE,
+  PASSWORD_RESET_TEMPLATE,
+} from "../config/emailTemplates.js";
 
 // ─── REGISTER ─────────────────────────────────────────────────────────────────
 export const register = async (req, res) => {
@@ -158,8 +161,9 @@ export const register = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: true, // must be HTTPS
+      sameSite: "none", // allow cross-site cookies
+      domain: ".ealert-qcde.com", // only if frontend + backend share this root
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -236,9 +240,10 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: true, // Safari requires HTTPS
+      sameSite: "none", // allow cross-site cookie
+      domain: ".ealerto-qcde.com", // 🔑 share cookie across subdomains
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     return res.json({ success: true });
@@ -252,8 +257,9 @@ export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: true,
+      sameSite: "none",
+      domain: ".ealerto-qcde.com",
     });
     return res.json({ success: true, message: "Logged Out" });
   } catch (error) {
@@ -284,7 +290,10 @@ export const sendVerifyOtp = async (req, res) => {
       to: user.email,
       subject: "Account Verification OTP",
       //text: `Your OTP is ${otp}. Verify your account using this OTP.`,
-      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
+      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace(
+        "{{email}}",
+        user.email
+      ),
     };
     await transporter.sendMail(mailOption);
 
@@ -362,7 +371,10 @@ export const sendResetOtp = async (req, res) => {
       to: user.email,
       subject: "Password Reset OTP",
       //text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
-      html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
+      html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace(
+        "{{email}}",
+        user.email
+      ),
     };
 
     await transporter.sendMail(mailOption);
