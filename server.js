@@ -22,7 +22,7 @@ const port = process.env.PORT || 4000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins, // Replace with your frontend URL
+    origin: "https://www.ealerto-qcde.com", // Replace with your frontend URL
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -58,10 +58,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = [
-  "https://www.ealerto-qcde.com",
-  "https://ealerto-qcde.com",
-];
+const allowedOrigins = ["https://www.ealerto-qcde.com"];
 app.use(
   cors({
     origin: allowedOrigins,
