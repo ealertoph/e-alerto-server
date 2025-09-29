@@ -58,10 +58,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = [
-  "https://www.ealerto-qcde.com",
-  "https://ealerto-qcde.com", // add non-www too
-];
+const allowedOrigins = ["https://www.ealerto-qcde.com"];
 app.use(
   cors({
     origin: allowedOrigins,
