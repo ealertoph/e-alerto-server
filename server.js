@@ -22,7 +22,7 @@ const port = process.env.PORT || 4000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://www.ealerto-qcde.com", // Replace with your frontend URL
+    origin: allowedOrigins, // Replace with your frontend URL
     methods: ["GET", "POST"],
     credentials: true,
   },
