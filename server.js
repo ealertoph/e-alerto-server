@@ -16,25 +16,67 @@ import activityLogsRouter from "./routes/activityLogsRoutes.js";
 import feedbackRouter from "./routes/feedbackRoutes.js";
 import notificationRouter from "./routes/notificationRoutes.js";
 
+import helmet from "helmet";
+
 const app = express();
 const port = process.env.PORT || 4000;
 
+// ✅ Security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "default-src": ["'self'"],
+        "script-src": ["'self'"],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com",
+        ],
+        "img-src": ["'self'", "data:", "https:"],
+        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "connect-src": [
+          "'self'",
+          "https://api.ealerto-qcde.com",
+          "https://www.ealerto-qcde.com",
+          "https://ealerto-qcde.com",
+          "wss://api.ealerto-qcde.com",
+        ],
+        "frame-ancestors": ["'self'"],
+        "base-uri": ["'self'"],
+      },
+    },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    crossOriginEmbedderPolicy: false, // sometimes needed for React/Vite assets
+  })
+);
+
+// ✅ Permissions-Policy (modernized)
+app.use((req, res, next) => {
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  );
+  next();
+});
+
+// ✅ Create server + socket.io
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://www.ealerto-qcde.com", // Replace with your frontend URL
+    origin: ["https://www.ealerto-qcde.com", "https://ealerto-qcde.com"],
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
-// The userSocketMap object to track user IDs and their socket IDs
+// ✅ Map userId → socketId
 const userSocketMap = {};
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  // A single, unified block to handle connection and join events
   socket.on("join", (userId) => {
     userSocketMap[userId] = socket.id;
     console.log(`User ${userId} joined with socket ID ${socket.id}`);
@@ -42,7 +84,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("A user disconnected:", socket.id);
-    // When a user disconnects, find their ID in the map and remove it
     for (const userId in userSocketMap) {
       if (userSocketMap[userId] === socket.id) {
         delete userSocketMap[userId];
@@ -53,11 +94,13 @@ io.on("connection", (socket) => {
   });
 });
 
+// ✅ DB connection
 connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
 
+// ✅ CORS setup
 const allowedOrigins = [
   "https://www.ealerto-qcde.com",
   "https://ealerto-qcde.com",
@@ -70,6 +113,7 @@ app.use(
   })
 );
 
+// ✅ Routes
 app.get("/", (req, res) => res.send("API Working"));
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
@@ -80,7 +124,8 @@ app.use("/api/activitylogs", activityLogsRouter);
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/notifications", notificationRouter);
 
+// ✅ Start server
 server.listen(port, () => console.log(`Server started on PORT:${port}`));
 
-// Export both the io object and the userSocketMap
+// ✅ Export
 export { io, userSocketMap };
