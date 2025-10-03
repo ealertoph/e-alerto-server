@@ -30,11 +30,12 @@ app.use(
         "default-src": ["'self'", "https://www.ealerto-qcde.com"],
         "script-src": [
           "'self'",
+          "'unsafe-inline'", // reCAPTCHA sometimes needs inline handlers
           "https://www.ealerto-qcde.com",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
-          "https://www.google.com",
-          "https://www.gstatic.com",
+          "https://www.google.com", // <-- required for recaptcha/api.js
+          "https://www.gstatic.com", // <-- required for recaptcha assets
         ],
         "style-src": [
           "'self'",
