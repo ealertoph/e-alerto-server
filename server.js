@@ -25,13 +25,12 @@ const port = process.env.PORT || 4000;
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: true,
       directives: {
         "default-src": ["'self'", "https://www.ealerto-qcde.com"],
         "script-src": [
           "'self'",
           "'unsafe-inline'",
-          "'unsafe-eval'", // needed for Google’s recaptcha shim
+          "'unsafe-eval'",
           "https://www.ealerto-qcde.com",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
@@ -82,7 +81,7 @@ app.use(
       },
     },
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-    crossOriginEmbedderPolicy: false, // sometimes needed for React/Vite assets
+    crossOriginEmbedderPolicy: false,
   })
 );
 
