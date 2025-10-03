@@ -32,9 +32,10 @@ reportRouter.get("/image/:id", (req, res) => {
     bucketName: "reportImages",
   });
 
-  // ✅ Add CORS headers
+  // ✅ Add CORS + CORP headers
   res.setHeader("Access-Control-Allow-Origin", "https://www.ealerto-qcde.com");
   res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
 
   bucket
     .openDownloadStream(new mongoose.Types.ObjectId(req.params.id))
