@@ -30,12 +30,14 @@ app.use(
         "default-src": ["'self'", "https://www.ealerto-qcde.com"],
         "script-src": [
           "'self'",
-          "'unsafe-inline'", // reCAPTCHA sometimes needs inline handlers
+          "'unsafe-inline'",
+          "'unsafe-eval'", // needed for Google’s recaptcha shim
           "https://www.ealerto-qcde.com",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
-          "https://www.google.com", // <-- required for recaptcha/api.js
-          "https://www.gstatic.com", // <-- required for recaptcha assets
+          "https://www.google.com",
+          "https://www.gstatic.com",
+          "https://www.recaptcha.net",
         ],
         "style-src": [
           "'self'",
@@ -64,12 +66,16 @@ app.use(
           "wss://api.ealerto-qcde.com",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
+          "https://www.google.com",
+          "https://www.gstatic.com",
+          "https://www.recaptcha.net",
         ],
         "frame-src": [
           "'self'",
           "https://www.google.com",
           "https://www.gstatic.com",
           "https://maps.googleapis.com",
+          "https://www.recaptcha.net",
         ],
         "frame-ancestors": ["'self'"],
         "base-uri": ["'self'"],
