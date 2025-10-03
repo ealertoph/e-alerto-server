@@ -45,6 +45,7 @@ app.use(
           "data:",
           "https:",
           "https://www.ealerto-qcde.com",
+          "https://api.ealerto-qcde.com",
           "https://maps.gstatic.com",
         ],
         "font-src": [
@@ -70,7 +71,6 @@ app.use(
         "base-uri": ["'self'"],
       },
     },
-
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
     crossOriginEmbedderPolicy: false, // sometimes needed for React/Vite assets
   })
