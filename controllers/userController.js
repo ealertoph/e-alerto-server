@@ -699,14 +699,30 @@ export const uploadEmployeeProfilePic = [
 export const getProfilePic = async (req, res) => {
   try {
     const { id } = req.params;
-    const bucket = new GridFSBucket(mongoose.connection.db, {
+    const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
       bucketName: "profile",
     });
     const _id = new mongoose.Types.ObjectId(id);
+
+    // ✅ Add headers to allow cross-origin image usage
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://www.ealerto-qcde.com"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+
     const downloadStream = bucket.openDownloadStream(_id);
-    downloadStream.on("error", () => res.status(404).send("Not found"));
+
+    downloadStream.on("error", () => {
+      return res
+        .status(404)
+        .json({ success: false, message: "Profile picture not found" });
+    });
+
     downloadStream.pipe(res);
   } catch (err) {
+    console.error("Profile image error:", err);
     res.status(400).json({ success: false, message: "Invalid file id" });
   }
 };
