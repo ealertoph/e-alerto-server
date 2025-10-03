@@ -27,19 +27,31 @@ app.use(
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        "default-src": ["'self'"],
+        "default-src": ["'self'", "https://www.ealerto-qcde.com"],
         "script-src": [
           "'self'",
+          "https://www.ealerto-qcde.com",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
         ],
         "style-src": [
           "'self'",
           "'unsafe-inline'",
+          "https://www.ealerto-qcde.com",
           "https://fonts.googleapis.com",
         ],
-        "img-src": ["'self'", "data:", "https:", "https://maps.gstatic.com"],
-        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "img-src": [
+          "'self'",
+          "data:",
+          "https:",
+          "https://www.ealerto-qcde.com",
+          "https://maps.gstatic.com",
+        ],
+        "font-src": [
+          "'self'",
+          "https://www.ealerto-qcde.com",
+          "https://fonts.gstatic.com",
+        ],
         "connect-src": [
           "'self'",
           "https://api.ealerto-qcde.com",
@@ -54,10 +66,11 @@ app.use(
           "https://www.google.com",
           "https://maps.googleapis.com",
         ],
-        "frame-ancestors": ["'self'"], // okay for embedding your site, but maps iframe is allowed by frame-src
+        "frame-ancestors": ["'self'"],
         "base-uri": ["'self'"],
       },
     },
+
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
     crossOriginEmbedderPolicy: false, // sometimes needed for React/Vite assets
   })
