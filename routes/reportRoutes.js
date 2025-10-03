@@ -31,8 +31,17 @@ reportRouter.get("/image/:id", (req, res) => {
   const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName: "reportImages",
   });
+
+  // ✅ Add CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "https://www.ealerto-qcde.com");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
   bucket
     .openDownloadStream(new mongoose.Types.ObjectId(req.params.id))
+    .on("error", (err) => {
+      console.error("Image stream error:", err);
+      res.status(404).json({ success: false, message: "Image not found" });
+    })
     .pipe(res);
 });
 
