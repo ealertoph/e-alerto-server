@@ -33,6 +33,8 @@ app.use(
           "https://www.ealerto-qcde.com",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
+          "https://www.google.com/recaptcha",
+          "https://www.gstatic.com/recaptcha/",
         ],
         "style-src": [
           "'self'",
