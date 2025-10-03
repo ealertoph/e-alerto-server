@@ -28,13 +28,17 @@ app.use(
       useDefaults: true,
       directives: {
         "default-src": ["'self'"],
-        "script-src": ["'self'"],
+        "script-src": [
+          "'self'",
+          "https://maps.googleapis.com",
+          "https://maps.gstatic.com",
+        ],
         "style-src": [
           "'self'",
           "'unsafe-inline'",
           "https://fonts.googleapis.com",
         ],
-        "img-src": ["'self'", "data:", "https:"],
+        "img-src": ["'self'", "data:", "https:", "https://maps.gstatic.com"],
         "font-src": ["'self'", "https://fonts.gstatic.com"],
         "connect-src": [
           "'self'",
@@ -42,8 +46,15 @@ app.use(
           "https://www.ealerto-qcde.com",
           "https://ealerto-qcde.com",
           "wss://api.ealerto-qcde.com",
+          "https://maps.googleapis.com",
+          "https://maps.gstatic.com",
         ],
-        "frame-ancestors": ["'self'"],
+        "frame-src": [
+          "'self'",
+          "https://www.google.com",
+          "https://maps.googleapis.com",
+        ],
+        "frame-ancestors": ["'self'"], // okay for embedding your site, but maps iframe is allowed by frame-src
         "base-uri": ["'self'"],
       },
     },
