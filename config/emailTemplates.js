@@ -42,7 +42,7 @@ export const EMAIL_VERIFY_TEMPLATE = `
                   </p>
                   <p class="button">{{otp}}</p>
                   <p style="font-size:14px; line-height:1.5; padding-top:16px;">
-                    This OTP is valid for 24 hours.
+                    This OTP is only valid for the next 3 minutes.
                   </p>
                 </td>
               </tr>
@@ -100,7 +100,7 @@ export const PASSWORD_RESET_TEMPLATE = `
                   </p>
                   <p class="button">{{otp}}</p>
                   <p style="font-size:14px; line-height:1.5; padding-top:16px;">
-                    The password reset OTP is only valid for the next 15 minutes.
+                    The password reset OTP is only valid for the next 3 minutes.
                   </p>
                 </td>
               </tr>
