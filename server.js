@@ -57,7 +57,7 @@ app.use(
           "data:",
           "https:",
           "https://www.ealerto-qcde.com",
-          "https://api.ealerto-qcde.com",
+          "https://e-alerto-server.onrender.com",
           "https://maps.gstatic.com",
         ],
         "font-src": [
@@ -67,10 +67,9 @@ app.use(
         ],
         "connect-src": [
           "'self'",
-          "https://api.ealerto-qcde.com",
+          "https://e-alerto-server.onrender.com",
           "https://www.ealerto-qcde.com",
           "https://ealerto-qcde.com",
-          "wss://api.ealerto-qcde.com",
           "http://localhost:5173",
           "http://localhost:3000",
           "ws://localhost:4000",
