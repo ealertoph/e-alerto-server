@@ -4,7 +4,7 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
-import "./jobs/reportReminders.js"; // ✅ Import cron job
+import "./jobs/reportReminders.js";
 
 import connectDB from "./config/mongodb.js";
 import authRouter from "./routes/authRoutes.js";
@@ -20,6 +20,14 @@ import helmet from "helmet";
 
 const app = express();
 const port = process.env.PORT || 4000;
+
+// ✅ CORS setup
+const allowedOrigins = [
+  "https://www.ealerto-qcde.com",
+  "https://ealerto-qcde.com",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
 
 // ✅ Security headers
 app.use(
@@ -63,6 +71,9 @@ app.use(
           "https://www.ealerto-qcde.com",
           "https://ealerto-qcde.com",
           "wss://api.ealerto-qcde.com",
+          "http://localhost:5173",
+          "http://localhost:3000",
+          "ws://localhost:4000",
           "https://maps.googleapis.com",
           "https://maps.gstatic.com",
           "https://www.google.com",
@@ -85,7 +96,7 @@ app.use(
   })
 );
 
-// ✅ Permissions-Policy (modernized)
+// ✅ Permissions-Policy
 app.use((req, res, next) => {
   res.setHeader(
     "Permissions-Policy",
@@ -94,11 +105,23 @@ app.use((req, res, next) => {
   next();
 });
 
+// ✅ Express middleware
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 // ✅ Create server + socket.io
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: ["https://www.ealerto-qcde.com", "https://ealerto-qcde.com"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -129,22 +152,6 @@ io.on("connection", (socket) => {
 
 // ✅ DB connection
 connectDB();
-
-app.use(express.json());
-app.use(cookieParser());
-
-// ✅ CORS setup
-const allowedOrigins = [
-  "https://www.ealerto-qcde.com",
-  "https://ealerto-qcde.com",
-];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
 
 // ✅ Routes
 app.get("/", (req, res) => res.send("API Working"));
